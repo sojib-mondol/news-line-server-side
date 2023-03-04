@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 const port = process.env.PORT || 5000;
 
@@ -31,12 +31,49 @@ async function run(){
             res.send(data);
         });
 
-         // getting all news
-         app.get('/braking-news', async(req, res) => {
-            const query = {};
+        // getting breaking-news
+        app.get('/breaking-news', async(req, res) => {
+            //const category = "Breaking News" another option---- step 1 
+            const query = {category: "Breaking News"};
             const data = await newsData.find(query).toArray();
-            res.send(data);
+            //const breakingnews = data.filter(news => news.category === category) --- step 2
+            res.send(data); 
         });
+
+        // getting international-news
+        app.get('/international-news', async(req, res) => {
+            const query = {category: "International News"};
+            const data = await newsData.find(query).toArray();
+            res.send(data); 
+        });
+        // getting Entertainment
+        app.get('/entertainment', async(req, res) => {
+            const query = {category: "Entertainment"};
+            const data = await newsData.find(query).toArray();
+            res.send(data); 
+        });
+        // getting Sports
+        app.get('/sports', async(req, res) => {
+            const query = {category: "Sports"};
+            const data = await newsData.find(query).toArray();
+            res.send(data); 
+        });
+        // getting Regular News
+        app.get('/regular-news', async(req, res) => {
+            const query = {category: "Regular News"};
+            const data = await newsData.find(query).toArray();
+            res.send(data); 
+        });
+        
+        
+        // getting nes details by ID by usiinf ObjectID
+        app.get('/details/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id)};
+            const data = await newsData.findOne(query);
+            res.send(data);
+        })
+
 
 
     }
